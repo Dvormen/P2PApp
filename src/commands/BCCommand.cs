@@ -13,7 +13,15 @@ namespace P2PApp.src.commands
     {
         public void Execute()
         {
-            Console.WriteLine("BCCommand");
+            string bankCode = BankCode.GetLocalIpAddress();
+            if(bankCode != null )
+            {
+                Console.WriteLine("BC "+ bankCode);
+            }
+            else 
+            {
+                Console.WriteLine("ER Didn't find a valid ip adress");
+            }
         }
     }
 }
