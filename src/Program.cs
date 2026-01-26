@@ -15,7 +15,6 @@ namespace P2PApp.src
 
             while (true)
             {
-                Console.Write("Enter command: ");
                 string input = Console.ReadLine()?.Trim();
 
                 if (string.IsNullOrEmpty(input))
