@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace P2PApp.src
 {
+    /// <summary>
+    /// Class for getting ip address
+    /// </summary>
     internal class BankCode
     {
         public static string GetLocalIpAddress()
