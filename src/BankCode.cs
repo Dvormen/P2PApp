@@ -13,7 +13,7 @@ namespace P2PApp.src
     /// </summary>
     internal class BankCode
     {
-        public static string GetLocalIpAddress()
+        public static string GetIp()
         {
             foreach (var ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
             {
