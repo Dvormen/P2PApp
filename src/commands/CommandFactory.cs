@@ -154,7 +154,7 @@ namespace P2PApp.src.commands
         private static ICommand CreateBN(string[] parts, IBankRepository repository)
         {
             if (parts.Length != 1)
-                return new UnknownCommand("ER Invalid command");
+                return new UnknownCommand("ER Invalid command\n");
 
             string bankIp = BankCode.GetIp();
 
