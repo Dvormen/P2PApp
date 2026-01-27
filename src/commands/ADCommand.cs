@@ -25,12 +25,11 @@ namespace P2PApp.src.commands
             _repository = repository;
         }
 
-        public void Execute()
+        public string Execute()
         {
             if (_amount <= 0)
             {
-                Console.WriteLine("ER Deposit must be higher than 0");
-                return;
+                return "ER Deposit must be higher than 0\n";
             }
 
             var data = _repository.Load();
@@ -38,8 +37,7 @@ namespace P2PApp.src.commands
             var bank = data.Banks.FirstOrDefault(b => b.BankIp == _bankIp);
             if (bank == null)
             {
-                Console.WriteLine($"ER Bank {_bankIp} not found.");
-                return;
+                return $"ER Bank {_bankIp} not found.\n";
             }
 
             var account = bank.Accounts
@@ -47,17 +45,13 @@ namespace P2PApp.src.commands
 
             if (account == null)
             {
-                Console.WriteLine($"ER Account {_accountNumber} not found.");
-                return;
+                return $"ER Account {_accountNumber} not found.\n";
             }
 
             account.Balance += _amount;
 
             _repository.Save(data);
-
-            Console.WriteLine(
-                $"AD"
-            );
+            return $"AD\n";
         }
     }
 }
