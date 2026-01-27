@@ -17,9 +17,9 @@ namespace P2PApp.src.commands
         {
             _input = input;
         }
-        public void Execute()
+        public string Execute()
         {
-            Console.WriteLine("ER Invalid command");
+            return "ER Invalid commandXXXX\n";
         }
     }
 }
