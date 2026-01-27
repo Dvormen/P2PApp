@@ -20,7 +20,7 @@ namespace P2PApp.src.commands
             _bankIp = bankIp;
             _repository = repository;
         }
-        public void Execute()
+        public string Execute()
         {
             var data = _repository.Load();
 
@@ -43,7 +43,7 @@ namespace P2PApp.src.commands
 
             _repository.Save(data);
 
-            Console.WriteLine($"AC {accountNumber}/{_bankIp}");
+            return $"AC {accountNumber}/{_bankIp}\n";
         }
     }
 }
