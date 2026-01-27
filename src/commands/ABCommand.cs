@@ -23,15 +23,14 @@ namespace P2PApp.src.commands
             _repository = repository;
         }
 
-        public void Execute()
+        public string Execute()
         {
             var data = _repository.Load();
 
             var bank = data.Banks.FirstOrDefault(b => b.BankIp == _bankIp);
             if (bank == null)
             {
-                Console.WriteLine("ER Invalid command");
-                return;
+                return "ER Invalid command\n";
             }
 
             var account = bank.Accounts
@@ -39,11 +38,10 @@ namespace P2PApp.src.commands
 
             if (account == null)
             {
-                Console.WriteLine("ER Invalid command");
-                return;
+                return "ER Invalid command\n";
             }
 
-            Console.WriteLine($"AB {account.Balance}");
+            return $"AB {account.Balance}\n";
         }
     }
 }
