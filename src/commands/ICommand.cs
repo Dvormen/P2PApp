@@ -11,6 +11,6 @@ namespace P2PApp.src.commands
     /// </summary>
     internal interface ICommand
     {
-        void Execute();
+        string Execute();
     }
 }
