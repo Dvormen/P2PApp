@@ -1,4 +1,5 @@
-﻿using System;
+﻿using P2PApp.src.accounts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,30 @@ namespace P2PApp.src.commands
     /// </summary>
     internal class BACommand : ICommand
     {
+        private readonly string _bankIp;
+        private readonly IBankRepository _repository;
+
+        public BACommand(string bankIp, IBankRepository repository)
+        {
+            _bankIp = bankIp;
+            _repository = repository;
+        }
         public void Execute()
         {
-            Console.WriteLine("BACommand");
+            var data = _repository.Load();
+
+            var bank = data.Banks.FirstOrDefault(b => b.BankIp == _bankIp);
+            if (bank == null)
+            {
+                Console.WriteLine("ER Invalid command");
+                return;
+            }
+
+            decimal totalBalance = bank.Accounts.Sum(a => a.Balance);
+
+            Console.WriteLine(
+                $"BA {totalBalance}"
+            );
         }
     }
 }

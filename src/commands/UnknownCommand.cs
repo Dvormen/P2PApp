@@ -19,7 +19,7 @@ namespace P2PApp.src.commands
         }
         public void Execute()
         {
-            Console.WriteLine("Unknown Command");
+            Console.WriteLine("ER Invalid command");
         }
     }
 }
