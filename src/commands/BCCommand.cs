@@ -11,16 +11,16 @@ namespace P2PApp.src.commands
     /// </summary>
     internal class BCCommand : ICommand
     {
-        public void Execute()
+        public string Execute()
         {
             string bankCode = BankCode.GetIp();
             if(bankCode != null )
             {
-                Console.WriteLine("BC "+ bankCode);
+                return "BC " + bankCode + "\n";
             }
             else 
             {
-                Console.WriteLine("ER Didn't find a valid ip adress");
+                return "ER Didn't find a valid ip adress\n";
             }
         }
     }
