@@ -1,4 +1,8 @@
 ﻿using P2PApp.src.commands;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.Json;
 
 namespace P2PApp.src
 {
@@ -9,28 +13,77 @@ namespace P2PApp.src
         /// </summary>
         static void Main(string[] args)
         {
-            Console.WriteLine("=== P2P Bank Node ===");
-            Console.WriteLine("Connected");
-            Console.WriteLine();
 
-            while (true)
+            Int32 port = 65525;
+            IPAddress localAddress = IPAddress.Parse("127.0.0.1");
+
+            TcpListener server = null;
+
+            try
             {
-                string input = Console.ReadLine()?.Trim();
+                server = new TcpListener(localAddress, port);
+                server.Start();
 
-                if (string.IsNullOrEmpty(input))
-                    continue;
+                Console.WriteLine("=== P2P Bank Node ===");
+                Console.WriteLine("Waiting for connection...");
 
-                if (input.Equals("EXIT", StringComparison.OrdinalIgnoreCase))
+                while (true)
                 {
-                    Console.WriteLine("Shutting down node...");
-                    break;
+                    TcpClient client = server.AcceptTcpClient();
+                    Console.WriteLine("New device connected");
+
+                    Task.Run(() => HandleClient(client));
                 }
-
-                ICommand command = CommandFactory.Create(input);
-                command.Execute();
-
-                Console.WriteLine();
             }
+            catch (SocketException e)
+            {
+                Console.WriteLine($"SocketException: {e}");
+            }
+            finally
+            {
+                server.Stop();
+            }
+        }
+
+        static void HandleClient(TcpClient client)
+        {
+            NetworkStream stream = client.GetStream();
+
+            byte[] buffer = new byte[256];
+            int count;
+            try
+            {
+                byte[] message1 = Encoding.ASCII.GetBytes("=== P2P Bank Node ===\n");
+                stream.Write(message1, 0, message1.Length);
+
+                while ((count = stream.Read(buffer, 0, buffer.Length)) != 0)
+                {
+                    string data = Encoding.ASCII.GetString(buffer, 0, count);
+
+                    string cleanData = data.Trim();
+                    if (string.IsNullOrEmpty(cleanData))
+                    {
+                        continue;
+                    }
+
+                    ICommand command = CommandFactory.Create(data);
+
+                    byte[] message2 = Encoding.ASCII.GetBytes(command.Execute());
+                    stream.Write(message2, 0, message2.Length);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                client.Close();
+                Console.WriteLine("Device disconnected.");
+            }
+            
+
+            
         }
     }
 }
