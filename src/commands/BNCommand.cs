@@ -19,21 +19,19 @@ namespace P2PApp.src.commands
             _bankIp = bankIp;
             _repository = repository;
         }
-        public void Execute()
+        public string Execute()
         {
             var data = _repository.Load();
 
             var bank = data.Banks.FirstOrDefault(b => b.BankIp == _bankIp);
             if (bank == null)
             {
-                Console.WriteLine("ER Invalid command");
-                return;
+                return "ER Invalid command\n";
             }
 
             int accountCount = bank.Accounts.Count;
 
-            Console.WriteLine($"BN {accountCount}"
-            );
+            return $"BN {accountCount}\n";
         }
     }
 }
