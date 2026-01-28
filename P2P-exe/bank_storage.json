@@ -1,4 +1,17 @@
 {
   "Banks": [
+    {
+      "BankIp": "",
+      "Accounts": []
+    },
+    {
+      "BankIp": "192.168.0.101",
+      "Accounts": [
+        {
+          "AccountNumber": 10001,
+          "Balance": 0
+        }
+      ]
+    }
   ]
 }

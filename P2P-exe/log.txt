@@ -1,0 +1,8 @@
+[2026-01-28 18:12:02] New device connected
+[2026-01-28 18:12:05] Command received: bc
+[2026-01-28 18:12:05] Command executed: bc => BC 192.168.0.101
+
+[2026-01-28 18:12:37] Command received: ac
+[2026-01-28 18:12:37] Command executed: ac => AC 10001/192.168.0.101
+
+[2026-01-28 18:12:48] Device disconnected
