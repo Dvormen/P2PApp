@@ -1,8 +1,11 @@
-﻿using P2PApp.src.commands;
+﻿using P2PApp.src.accounts;
+using P2PApp.src.commands;
+using P2PApp.src.network;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace P2PApp.src
 {
@@ -19,6 +22,13 @@ namespace P2PApp.src
 
             TcpListener server = null;
 
+            IBankRepository repo = new JsonBankRepo();
+            Task.Run(() =>
+            {
+                var web = new WebHost(repo);
+                web.Start();
+            });
+
             try
             {
                 server = new TcpListener(localAddress, port);
@@ -32,7 +42,7 @@ namespace P2PApp.src
                     TcpClient client = server.AcceptTcpClient();
                     Console.WriteLine("New device connected");
 
-                    Task.Run(() => HandleClient(client));
+                    Task.Run(() => HandleClient(client, repo));
                 }
             }
             catch (SocketException e)
@@ -45,7 +55,7 @@ namespace P2PApp.src
             }
         }
 
-        static void HandleClient(TcpClient client)
+        static void HandleClient(TcpClient client, IBankRepository repo)
         {
             NetworkStream stream = client.GetStream();
 
@@ -66,7 +76,7 @@ namespace P2PApp.src
                         continue;
                     }
 
-                    ICommand command = CommandFactory.Create(data);
+                    ICommand command = CommandFactory.Create(data,repo);
 
                     byte[] message2 = Encoding.ASCII.GetBytes(command.Execute());
                     stream.Write(message2, 0, message2.Length);
