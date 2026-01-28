@@ -7,6 +7,9 @@
 ## 2026-27-02 - Lukáš Dvořák, Max Herich
 * Added data saving into Json file
 
+## 2026-27-02 - Lukáš Dvořák
+* Modified commands to write and read from json file
+
 ## 2026-27-02 - Max Herich
 * Added peer to peer functionality
 
