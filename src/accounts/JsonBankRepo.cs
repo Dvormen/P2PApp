@@ -14,24 +14,20 @@ namespace P2PApp.src.accounts
         public BankStorage Load()
         {
             if (!File.Exists(_filePath))
-                return new BankStorage();
+            {
+                var empty = new BankStorage();
+                Save(empty);
+                return empty;
+            }
 
-            var json = File.ReadAllText(_filePath);
-
-            if (string.IsNullOrWhiteSpace(json))
-                return new BankStorage();
-
+            string json = File.ReadAllText(_filePath);
             return JsonSerializer.Deserialize<BankStorage>(json)
                    ?? new BankStorage();
         }
 
         public void Save(BankStorage data)
         {
-            var json = JsonSerializer.Serialize(
-                data,
-                new JsonSerializerOptions { WriteIndented = true }
-            );
-
+            var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(_filePath, json);
         }
     }
