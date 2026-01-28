@@ -1,4 +1,5 @@
 ﻿using P2PApp.src.accounts;
+using P2PApp.src.network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,12 @@ namespace P2PApp.src.commands
     /// </summary>
     internal class CommandFactory
     {
-        private static readonly IBankRepository repository = new JsonBankRepo();
         /// <summary>
         /// Method for command recognition
         /// </summary>
         /// <param name="input">user input</param>
         /// <returns></returns>
-        public static ICommand Create(string input)
+        public static ICommand Create(string input, IBankRepository repo)
         {
 
         var parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -26,14 +26,14 @@ namespace P2PApp.src.commands
 
             return commandCode switch
             {
-                "AB" => CreateAB(parts,repository),
-                "AC" => new ACCommand(BankCode.GetIp(),repository),
-                "AD" => CreateAD(parts),
-                "AR" => CreateAR(parts,repository),
-                "AW" => CreateAW(parts, repository),
-                "BA" => CreateBA(parts,repository),
+                "AB" => CreateAB(parts,repo),
+                "AC" => new ACCommand(BankCode.GetIp(),repo),
+                "AD" => CreateAD(parts, repo),
+                "AR" => CreateAR(parts,repo),
+                "AW" => CreateAW(parts, repo),
+                "BA" => CreateBA(parts,repo),
                 "BC" => new BCCommand(),
-                "BN" => CreateBN(parts,repository),
+                "BN" => CreateBN(parts,repo),
                 _ => new UnknownCommand(input)
             };
         }
@@ -42,7 +42,7 @@ namespace P2PApp.src.commands
         /// </summary>
         /// <param name="parts">parsed user input</param>
         /// <returns>new AC command</returns>
-        private static ICommand CreateAD(string[] parts)
+        private static ICommand CreateAD(string[] parts, IBankRepository repository)
         {
             if (parts.Length != 3)
                 return new UnknownCommand("ER Invalid command");
