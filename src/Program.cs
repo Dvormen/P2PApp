@@ -41,6 +41,7 @@ namespace P2PApp.src
                 {
                     TcpClient client = server.AcceptTcpClient();
                     Console.WriteLine("New device connected");
+                    Logger.Log("New device connected");
 
                     Task.Run(() => HandleClient(client, repo));
                 }
@@ -77,8 +78,12 @@ namespace P2PApp.src
                     }
 
                     ICommand command = CommandFactory.Create(data,repo);
+                    Logger.Log($"Command received: {data}");
 
-                    byte[] message2 = Encoding.ASCII.GetBytes(command.Execute());
+                    string result = command.Execute();
+                    Logger.Log($"Command executed: {data} => {result}");
+
+                    byte[] message2 = Encoding.ASCII.GetBytes(result + "\n");
                     stream.Write(message2, 0, message2.Length);
                 }
             }
@@ -90,6 +95,7 @@ namespace P2PApp.src
             {
                 client.Close();
                 Console.WriteLine("Device disconnected.");
+                Logger.Log("Device disconnected");
             }
             
 
