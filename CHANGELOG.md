@@ -12,3 +12,4 @@
 
 ## 2026-28-02 - Lukáš Dvořák
 * Added web UI
+* Added Logger
