@@ -19,7 +19,7 @@ namespace P2PApp.src.commands
         }
         public string Execute()
         {
-            return "ER Invalid commandXXXX\n";
+            return "ER Invalid command\n";
         }
     }
 }
